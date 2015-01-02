@@ -3,17 +3,17 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.mrep.fmcg-mc"
-        version   = "1.0.1">
+        id        = "com.businesssolutionapps.rmap"
+        version   = "1.0.8">
 
-    <name>mRep-cm</name>
+    <name>Retailer Mapping</name>
 
     <description>
-        mReporting for commodity Industry
+        Retailer Mapping
     </description>
 
-    <author href="http://phonegap.com" email="support@phonegap.com">
-        Business Solution Apps Team
+    <author href="http://phonegap.com" email="sabbir456@gmail.com">
+        Businesss Solution Apps Team
     </author>
 
     <!--
@@ -21,15 +21,12 @@
         following tag to your config.xml; you will still have the INTERNET
         permission on your app, which PhoneGap requires.
     -->
-    <!--
-	<preference name="permissions"                value="none"/>
+	<!--
+    <preference name="permissions"                value="none"/>
 	-->
-	<feature name="http://api.phonegap.com/1.0/device" />
-	<feature name="http://api.phonegap.com/1.0/geolocation"/>
-	
 
     <!-- Customize your app and platform with the preference element. -->
-    <preference name="phonegap-version"           value="3.5.0" />          <!-- all: current version of PhoneGap -->
+    <preference name="phonegap-version"           value="3.6.3" />          <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
@@ -107,7 +104,6 @@
         Otherwise, you can specify specific domains:
     -->
     <access origin="*"/> <!-- allow local pages -->
-	
     <!--
         <access origin="http://phonegap.com" />                    - allow any secure requests to http://phonegap.com/
         <access origin="http://phonegap.com" subdomains="true" />  - same as above, but including subdomains, such as http://build.phonegap.com/
