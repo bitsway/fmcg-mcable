@@ -1,8 +1,5 @@
 
 
-var apipath_base_photo_dm='http://e2.businesssolutionapps.com/mrepmacrocable/syncmobile/dmpath?CID=MACROCABLE&HTTPPASS=e99business321cba'
-//var apipath_base_photo_dm='http://127.0.0.1:8000/macrocable/syncmobile/dmpath?CID=MACROCABLE&HTTPPASS=e99business321cba'
-
 var mobile_off_flag=0;
 
 //-------GET GEO LOCATION
@@ -152,26 +149,35 @@ function get_login() {
 							
 //========================= Longin: Check user
 function check_user() {
+	
+	var cid=$("#cid").val().toUpperCase();
 	var user_id=$("#user_id").val();
 	var user_pass=$("#user_pass").val();
 	
+	//-------------- Base Url	
+	//syncmobile
+	var apipath_base_photo_dm='http://e2.businesssolutionapps.com/dmpath/get_path?CID='+cid +'&HTTPPASS=e99business321cba'
+	
+	//local
+	//var apipath_base_photo_dm='http://127.0.0.1:8000/welcome/dmpath/get_path?CID='+cid +'&HTTPPASS=e99business321cba'
+	
+	
+	//----------------
+	
 	var base_url='';
 	var photo_url='';
-	
-	
+		
 	//-----
-	if (user_id=="" || user_id==undefined || user_pass=="" || user_pass==undefined){
+	if (cid=="" || cid==undefined || user_id=="" || user_id==undefined || user_pass=="" || user_pass==undefined){
 		var url = "#login";      
 		$.mobile.navigate(url);
-		$("#error_login").html("Required User ID and Password");	
+		$("#error_login").html("Required CID, User ID and Password");	
 	}else{
 		//-----------------
 		localStorage.base_url='';
 		localStorage.photo_url='';
 		localStorage.photo_submit_url='';
-		
-		//alert(apipath_base_photo_dm);
-		
+				
 		//----
 		$.ajax({
 			 type: 'POST',
@@ -208,7 +214,7 @@ function check_user() {
 							localStorage.photo_url=photo_url;
 							localStorage.photo_submit_url=photo_submit_url;
 							
-							localStorage.cid='MACROCABLE';
+							localStorage.cid=cid;
 							localStorage.user_id=user_id;
 							localStorage.user_pass=user_pass;   		
 							localStorage.synced='NO'
@@ -369,7 +375,7 @@ function check_user() {
 					}else{
 						$("#wait_image_login").hide();
 						$("#loginButton").show();
-						$("#error_login").html('Base URL Settings Incorrect');	
+						$("#error_login").html('Settings not available. Enter valid CID');	
 					}
 					
 				}
@@ -2577,6 +2583,21 @@ function delivery() {
 	//$("#btn_delivery_dealer").hide();
 	$("#delivery_distributor_cmb_id").val('');	
 	
+	var now = new Date();
+	var year=now.getUTCFullYear();
+	
+	var month=now.getUTCMonth()+1;
+	if (month<10){
+		month="0"+month
+		}
+	var day=now.getUTCDate();
+	if (day<10){
+		day="0"+day
+		}	
+	var currentDay = year+ "-" + month + "-" + day;
+	$("#delivery_date").val(currentDay);
+	
+	
 	var delivery_distributor_cmb_list=localStorage.delivery_distributor_cmb_list;
 	
 	//---	
@@ -3321,7 +3342,7 @@ function visitReport(){
 						
 						$("#tbl_visit_rpt_show_sales").append(salesStrData).trigger('create');
 						
-						loadChart();
+						//loadChart();
 						//----
 												
 					}else{						
@@ -4063,210 +4084,6 @@ function failProfile(error) {
 //    console.log("upload error target " + error.target);
 }
 
-
-
 //=====================MAP Start=====================
-function marketNextCProfile_map() {
-	
-	$("#err_m_retailer_next_cp").html('');
-	
-	var market_name=$("#profile_market_cmb_id").val();
-	
-	if(market_name=='' || market_name==0){
-			$("#err_m_retailer_next_cp").text("Market required");
-		}else{
-			$("#wait_image_profile_market_ret").show();	
-			
-			
-			//visitMarketStr
-			var marketNameId=market_name.split('-');
-			var market_Id=marketNameId[1];
-			
-			//alert(localStorage.base_url+'getMarketClientListMap?cid='+localStorage.cid+'&rep_id='+localStorage.user_id+'&rep_pass='+localStorage.user_pass+'&synccode='+localStorage.synccode+'&market_id='+market_Id);
-			//$("#map_path").text(localStorage.base_url+'getMarketClientListMap?cid='+localStorage.cid+'&rep_id='+localStorage.user_id+'&rep_pass='+localStorage.user_pass+'&synccode='+localStorage.synccode+'&market_id='+market_Id);
-			
-			// ajax-------
-			$.ajax({
-				 type: 'POST',
-				 url: localStorage.base_url+'getMarketClientListMap?cid='+localStorage.cid+'&rep_id='+localStorage.user_id+'&rep_pass='+localStorage.user_pass+'&synccode='+localStorage.synccode+'&market_id='+market_Id,
-				 success: function(result) {
-						
-						//alert(result);
-						if (result==''){					
-							$("#err_m_retailer_next_cp").html('Sorry Network not available');
-							$("#wait_image_profile_market_ret").hide();
-						}else{
-							var resultArray = result.split('<SYNCDATA>');			
-							if (resultArray[0]=='FAILED'){						
-								$("#err_m_retailer_next_cp").html(resultArray[1]);
-								$("#wait_image_profile_market_ret").hide();
-							}else if (resultArray[0]=='SUCCESS'){
-														
-								var m_client_string=resultArray[1];
-								var result_show_Array = m_client_string.split('<fdfd>');	
-								
-								localStorage.map_desc=result_show_Array[0];
-								localStorage.c_point=result_show_Array[1]
-								
-								$("#desc").val(localStorage.map_desc);
-								$("#c_point").val(localStorage.c_point);
-								
-								initialize();
-								google.maps.event.addDomListener(window, 'load', initialize);
-								
-								//-----
-								$("#err_m_retailer_next_cp").html('');
-								$("#wait_image_profile_market_ret").hide();	
-								
-								//---------	
-								
-								var url = "#page_market_ret_cprofile_map";
-								$.mobile.navigate(url);
-								
-								}								
-						}
-					  },
-				  error: function(result) {			  
-					  $("#err_m_retailer_next_cp").html('Invalid Request');
-					  $("#wait_image_profile_market_ret").hide();
-					  
-				  }
-			 });//end ajax	
-			
-		}	
-	
-}
-function initialize() {
-  var center_point=$("#c_point").val();
-  var center_point_Array = center_point.split(',');	
- // alert (center_point);
-  var myLatlng = new google.maps.LatLng(parseFloat(center_point_Array[0]),parseFloat(center_point_Array[1]));
- // var myLatlng_1 = new google.maps.LatLng(60, 105);
-  var mapOptions = {
-    zoom: 12,
-    center: myLatlng
-	
 
-  }
-
- var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  var marker, i;
-  var icons="lafarge_g.png";
-  var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Outlet',
-	  icon: icons
-	  
-  });
- //alert ('nadira');
- var p_station=$("#desc").val();
- 
-
-  
-  
-  var fields = p_station.split('rdrd');
-  var total_fields=p_station.split("rdrd").length
-  //alert (total_fields);
-  
-  
- var locations = [];
- var field=[];
- var j=0;
- 
- for (j = 0; j < total_fields; j++){
-	 var s=0;
-	 var fields_single = fields[j].split(',');
-  	 var total_fields_single=fields[j].split(",").length
-	 var arr=[];
-	 for (s = 0; s < total_fields_single; s++){
-		 arr.push(fields_single[s]);
-  		}
-	locations.push(arr);
- }
- 
- 
- var infowindow = new google.maps.InfoWindow();
- var marker, i;
- var icons="lafarge_g.png";
- 
- 
- 
- for (i = 0; i < locations.length; i++) {  
- 	
-   //check double shop==============
-	  var searchS=locations[i][1]+','+locations[i][2];
-	  var mOutlet = p_station.split('rdrd');
-	  var total_mOutlet=p_station.split("rdrd").length
-	  show_info='';
-	  //alert (total_mOutlet);
-	  for (var m = 0; m < total_mOutlet; m++){
-		
-		 if ( (mOutlet[m].search(searchS))!= -1 ){
-			 var mOutlet_single=mOutlet[m].split(',');
-			 if (show_info==''){
-				 show_info='<div  style="height:300px; width:700px">'+mOutlet_single[m][0]+'</div>';
-				 icons="lafarge_g.png";
-			 }
-			 else{
-				//alert (locations[i][0]); 
-				show_info=show_info+'<div style="background-color:#408080; height:2px"></div>'+'<div  style="height:300px; width:700px">'+mOutlet_single[m][0]+'</div>';	 
-				icons="lafarge_g.png";
-			 }
-			 
-		 }
-		
-		 //alert ('start: '+locations[i][0])
-	   }// double check for loop
-	  
-   //======check double shop end========
-   		
-		
-	  marker = new google.maps.Marker({
-		position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-		map: map,
-		icon: icons
-	   
-	  });
-		  
-		  
-
-      		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				return function() {
-					
-				  //check double shop==============
-				  var searchS=locations[i][1]+','+locations[i][2];
-				  var mOutlet = p_station.split('rdrd');
-				  var total_mOutlet=p_station.split("rdrd").length
-				  show_info='';
-				  
-				  for (var m = 0; m < total_mOutlet; m++){
-					 if ( (mOutlet[m].search(searchS))!= -1 ){
-						 var mOutlet_single=mOutlet[m].split(',');
-						 if (show_info==''){
-							 show_info='<div  style="height:auto; width:auto">'+locations[i][0]+'</div>';
-							
-						 }
-						 else{
-							show_info=show_info+'<div style="background-color:#408080; height:2px"></div>'+'<div  style="height:300px; width:700px">'+locations[i][0]+'</div>';	 
-							
-						 }
-						
-					 }
-					 
-				   }// double check for loop
-			   //======check double shop end========	
-					
-				  infowindow.setContent(show_info);
-				  infowindow.open(map, marker);
-				}
-      		})(marker, i));
-	  
-  
-  		//alert (i)
-  
- }  //main for
-  
-  
-}
 //=====================MAP End=====================

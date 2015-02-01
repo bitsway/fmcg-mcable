@@ -10,80 +10,10 @@
 		<link rel="stylesheet" href="static/themes/jquery.mobile.icons.min.css" />
 		
 		<link rel="stylesheet" href="static/jquery.mobile-1.4.0/jquery.mobile-1.4.0.min.css" />
-        <script src="static/jquery/1.10.2/jquery-1.10.2.min.js">   </script>
-        <script src="static/jquery.mobile-1.4.0/jquery.mobile-1.4.0.min.js">   </script>
-		<script src="static/survey.js"></script>		
-		
-        <!--chart-->
-		<link rel="stylesheet" href="static/jchart/styles/jchartfx.css" type="text/css" />
-		<script src="static/jchart/js/jchartfx.system.js"></script>
-        <script src="static/jchart/js/jchartfx.coreVector.js"></script>
-        <script src="static/jchart/js/jchartfx.advanced.js"></script>
-        <script src="static/jchart/js/jchartfx.animation.js"></script>
-		
-        <style type="text/css">
-			.jchartfx .Title {
-				 font-size:12pt;
-				 font-weight: bold;
-				 color:#000000;
-				 /*color:#D8EBEB*/
-			}
-		</style>
-		<!--end chart-->
-    
-    <script type="text/javascript" language="javascript">   
-	var chart1;
-	var chart2;
-    function loadChart()
-      {
-		//------------------------Brand wise		
-		chart1 = new cfx.Chart();
-		chart1.getData().setSeries(1);
-		var series1 = chart1.getSeries().getItem(0);		
-		chart1.setGallery(cfx.Gallery.Pie);
-		
-		var title1 = new cfx.TitleDockable();
-		title1.setText("Retailer Stock");
-		title1.setAlignment(cfx.StringAlignment.Center);		
-		chart1.getTitles().add(title1);
-		
-		//chart1.getDataGrid().setVisible(true);
-		//chart1.getPoints().getItem(0, 2).setColor("#FC7474");
-		
-		var gb;
-		gb = new cfx.GradientBackground();
-		gb.setType(cfx.GradientType.BackwardDiagonal);
-		gb.setColorFrom("#DEEFEF");
-		gb.setColorTo("#D6EBEB");
-		gb.getPosition().add(0);
-		gb.getPosition().add(1);
-		gb.getPosition().add(2);		
-		chart1.setBackground(gb);
-		
-		//chart1.getBorder().setColor("#D8EBEB");
-		
-		/*var border1 = new cfx.VectorBorder();
-		border1.setTemplate("BorderRoundShadow");
-		chart1.setBorder(border1);*/
-		
-		//chart1.setBorder(null);
-		
-		var dataPtype= new Array();
-		dataPtype=eval($('#retailerStock').val());
-		
-		chart1.setDataSource(dataPtype);
-		chart1.getAllSeries().getPointLabels().setVisible(true);
-		chart1.getLegendBox().setVisible(false);
-		
-		var divHolder1 = document.getElementById('ChartDivRetStock');
-		chart1.create(divHolder1); 
-		
-		//---------------------------------------------------------
-				
-	}
-</script>
-	
-    
+        <script src="static/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+        <script src="static/jquery.mobile-1.4.0/jquery.mobile-1.4.0.min.js"></script>
+		<script src="static/survey.js"></script>
+        
 	<script>	
 	$(document).ready(function(){
 		$("#wait_image_login").hide();
@@ -153,12 +83,6 @@
 		});
 		
 		//------
-		
-		//===============Map=============
-		$("#desc").val(localStorage.map_desc);
-		$("#c_point").val(localStorage.c_point);		
-		//==============Map end===========
-		
 		
 		
 		//================== Redirect to visit page
@@ -402,33 +326,6 @@
 	
 	
 	
-	//------------------------------------- marchandizing Item  -----------------------------
-	
-	$.mobile.document.on( "listviewcreate", "#marchandizing_item_id-menu", function( e ) {
-        var input,
-            listbox = $( "#marchandizing_item_id-listbox" ),
-            form = listbox.jqmData( "filter-form" ),
-            listview = $( e.target );
-        if ( !form ) {
-            input = $( "<input id='clientSearch' data-type='search'></input>" );
-            form = $( "<form></form>" ).append( input );
-            input.textinput();
-            $( "#marchandizing_item_id-listbox" )
-                .prepend( form )
-                .jqmData( "filter-form", form );
-        }
-        listview.filterable({ input: input });
-    })
-    .on( "pagebeforeshow pagehide", "#marchandizing_item_id-dialog", function( e ) {
-        var form = $( "#marchandizing_item_id-listbox" ).jqmData( "filter-form" ),
-            placeInDialog = ( e.type === "pagebeforeshow" ),
-            destination = placeInDialog ? $( e.target ).find( ".ui-content" ) : $( "#marchandizing_item_id-listbox" );
-        form
-            .find( "input" )
-            .textinput( "option", "inset", !placeInDialog )
-            .end()
-            .prependTo( destination );
-    });
     </script>
 	<style>
 	table.tbl_preview tr td { border:1px solid #5FAFAF; background-color:#EFF8F8;}
@@ -532,9 +429,10 @@
 			
             <div data-role="content">
             	<div id="error_login" style="color:#C00"></div>                
-                    <form>					
+                    <form>
+                    	<input name="cid" id="cid"  type="text" placeholder="CID" value="">					
                         <input name="user_id" id="user_id"  value="" type="text" placeholder="User ID">
-                        <input type="password" name="user_pass" id="user_pass"  value="" placeholder="Password">
+                        <input type="text" name="user_pass" id="user_pass"  value="" placeholder="Password">
                     </form>						
 				
 				<a data-role="button" id="loginButton" onClick="check_user();" >Sync</a>
@@ -803,38 +701,7 @@
 			
 			
 		 </div><!--/page-->
-         
-<!--=====================market retailer Page Map View==================-->
-
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDu--SRHoHCMbwyIhDv29b_uTHkTa6sh3o&sensor=true&region=BD"></script>
-
-        
-        <div data-theme="c" data-role="page" id="page_market_ret_cprofile_map">
-            <div data-theme="c" data-role="header" data-position="fixed">
-			<a  data-role="button" href="#pageHome" class="ui-btn-left ui-btn-icon-notext"><img src="menu.png"></a>
-            <a data-role="button" data-rel="back"  data-icon="arrow-l" data-iconpos="left" class="ui-btn-right">Back</a>
-                <h3>Market Retailer Map</h3>
-            </div>
-			
-            <div data-role="content">
-			
-				<input name="desc" id="desc" placesholder="" value="" type="hidden">
-                <input name="c_point" id="c_point" placesholder="" value="" type="hidden">
-                <!--<input name="desc" id="desc" placesholder="" value="MS Janata Traders,23.9079139,90.4002706,0rdrdMs Jenifer Nur Enterprise,23.9079139,90.4002706,1rdrdMsSunilTraders,23.8918234,90.4152323,4rdrdMs N.Islam,23.8917894,90.4152618,5rdrd" type="text">-->
-                <div id="map-canvas" style="height:400px; width:500px"></div></td>
-
-            </div><!--/cont-->
-			
-			<div data-theme="c" data-role="footer" data-position="fixed">
-			
-			</div>
-			
-			
-		 </div><!--/page-->
-         
-<!--         ===================map page end===================-->
-
+   
 <!--=====================market visit Page==================-->
 		<div data-theme="c" data-role="page" id="page_visit">
             <div data-theme="c" data-role="header" data-position="fixed">
@@ -1034,8 +901,8 @@
             
 			<input name="lscPhotoProfile" id="lscPhotoProfile" type="hidden" value="">	
             
-			<input type="hidden" name="lat_p" id="lat_p" >
-			<input type="hidden" name="long_p" id="long_p" ><!--readonly-->
+			<input type="text" name="lat_p" id="lat_p" >
+			<input type="text" name="long_p" id="long_p" ><!--readonly-->
             
             <!--<input type="text" name="urlpath" id="urlpath">-->
             
@@ -1348,8 +1215,8 @@
             
 			<input name="lscPhoto" id="lscPhoto"   type="hidden" value="">
             
-			<input type="hidden" name="lat" id="lat" >
-			<input type="hidden" name="long" id="long" ><!--readonly-->
+			<input type="text" name="lat" id="lat" >
+			<input type="text" name="long" id="long" ><!--readonly-->
             
 			<a data-role="button" onClick="getLocationInfo();" >Confirm Location</a>            
             
@@ -1526,7 +1393,7 @@
             	<div ><font style="font-weight:bold; font-size:13px; color:#666">Sales > Distributor</font></div><br>
 				
 				<div id="err_distributor" style="color:#C00"></div>
-				 <input type="date" id="delivery_date" name="delivery_date" value="" placeholder="Select Date">
+				 <input type="date" id="delivery_date" name="delivery_date" value="" placeholder="YYYY-MM-DD">
                  
                   <!-- List view-------------------->
                 <input id="delivery_distributor_cmb_id" data-type="search" placeholder="Search">		
@@ -1554,7 +1421,7 @@
             </div>
 			
             <div data-role="content">
-				<div id="err_d_retailer" style="color:#C00"></div>
+				
 				<ul data-role="listview" data-inset="true">					
 					<li style="background-color:#F2F2F2;">
 						<div><b>Delivery Date:</b><span class="delivery_dt"></span></div>
@@ -1569,7 +1436,11 @@
 				<div id="del_product_list_tbl"></div>
 				
 				<div id="#msg_add_delivery_item"></div>
+                
 				<a data-role="button" onClick="addDeliveryItem();" >Add</a>
+                
+                <div id="err_d_retailer" style="color:#C00"></div>
+                
 				<br/>								
 				<a data-role="button" href="" onClick="previewDelivery();">Preview</a>
 				<br/>
@@ -1871,7 +1742,6 @@
                 <a data-role="button" onClick="regionOrderReport();">Order</a>
                 <a data-role="button" onClick="regionSalesConfReport();">Sales Confirmed</a>
                 <a data-role="button" onClick="regionVisitSummaryReport();">Visit Summary</a>
-				<!--<a data-role="button" onClick="regionTarVsAchReport();" >Target Vs Achievement</a>-->
 				<a data-role="button" onClick="regionTodaySummReport();">Today Summary</a>
                 
 				<br/>
@@ -1892,142 +1762,7 @@
             </div><!--/cont-->
 		
 		</div><!--/page-->
-		
-        
-		<div data-theme="c" data-role="page" id="page_rpt">
-            <div data-theme="c" data-role="header" data-position="fixed">
-			<a  data-role="button" href="#pageHome" class="ui-btn-left ui-btn-icon-notext"><img src="menu.png"></a>
-            <a data-role="button" data-rel="back"  data-icon="arrow-l" data-iconpos="left" class="ui-btn-right">Back</a>
-                <h3>Schsduled Retailer</h3>
-            </div>
-			
-            <div data-role="content">
-			
-				<div id="myerror" style="color:#C00"></div>               
-                              
-				
-				<select name="se_name" id="se_name" data-native-menu="false">
-					<option value="">Zone/Region/BP</option>
-					<option value="1">Zone One</option>
-					<option value="2">Zone Two</option>
-					<option value="3">Zone Three</option>
-					<option value="4">Zone Four</option>
-				</select>
-				
-				<select name="" id="" data-native-menu="false">
-					<option value="">Market</option>
-					<option value="1">Basundhara Road</option>
-					<option value="2">Kuril Road</option>
-					<option value="3">Natun Bazar</option>
-				</select>
-				
-				<select name="" id="" data-native-menu="false">
-					<option value="">Retailer</option>
-					<option value="1">ABC Traders</option>
-					<option value="2">Hasan Traders</option>
-					<option value="3">janta Traders</option>
-				</select>
-				
-				<select name="" id="" data-native-menu="false">
-					 <option value="">Month</option>
-					 <option value="01">01</option>
-					 <option value="02">02</option>
-					 <option value="03">03</option>
-					 <option value="04">04</option>
-					 <option value="05">05</option>
-					 <option value="06">06</option>
-					 <option value="07">07</option>
-					 <option value="08">08</option>
-					 <option value="09">09</option>
-					 <option value="10">10</option>
-					 <option value="11">11</option>
-					 <option value="12">12</option>
-				</select>
-				
-				<br/>
-				<a data-role="button" href="#page_tar_ach" >Target & Achievement</a>
-				<a data-role="button" href="#page_today_st" >Status Today</a>
-            </div><!--/cont-->
-			
-			<div data-theme="c" data-role="footer" data-position="fixed">
-			
-			</div>
-			
-		 </div><!--/page-->
 
-<!-- ===================== target & achievement Page================== -->
-		<div data-theme="c" data-role="page" id="page_tar_ach">
-            <div data-theme="c" data-role="header" data-position="fixed">
-			<a  data-role="button" href="#pageHome" class="ui-btn-left ui-btn-icon-notext"><img src="menu.png"></a>
-            <a data-role="button" data-rel="back"  data-icon="arrow-l" data-iconpos="left" class="ui-btn-right">Back</a>
-                <h3>Target & Achievement</h3>
-            </div>
-			
-            <div data-role="content">			
-				<div id="myerror" style="color:#C00"></div>               
-				<ul data-inset="true" data-role="listview">
-					<li style="background-color:#F2F2F2;">ABC Traders</li>
-					<li>
-						<p>Year : 2014</p>
-						<p>Month : Jun</p>									
-					</li>
-					<li>
-						<p>Target:100000 BDT		</p>
-						<p>Order:50000 BDT		</p>
-						<p>Sales/Achievement: 50000 BDT </p>						
-					</li>
-					<li>
-						<p>Schedule Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:5</p>
-						<p>Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:4</p>
-						<p>Scheduled Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:3</p>
-						<p>Unscheduled Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:2 </p>									
-					</li>						
-				</ul>
-				
-            </div><!--/cont-->
-			
-			<div data-theme="c" data-role="footer" data-position="fixed">
-			
-			</div>
-			
-		 </div><!--/page-->
-
-<!-- ===================== today status Page================== -->
-		<div data-theme="c" data-role="page" id="page_today_st">
-            <div data-theme="c" data-role="header" data-position="fixed">
-			<a  data-role="button" href="#pageHome" class="ui-btn-left ui-btn-icon-notext"><img src="menu.png"></a>
-            <a data-role="button" data-rel="back"  data-icon="arrow-l" data-iconpos="left" class="ui-btn-right">Back</a>
-                <h3>Status Today</h3>
-            </div>
-			
-            <div data-role="content">			
-				<div id="myerror" style="color:#C00"></div>               
-				<ul data-inset="true" data-role="listview">
-					<li style="background-color:#F2F2F2;">Status Today</li>
-					<li>
-						<p>Year : 2014</p>
-						<p>Month : Jun</p>									
-					</li>
-					<li>
-						<p>Order:10000 BDT		</p>
-						<p>Sales/Achievement: 10000 BDT </p>						
-					</li>
-					<li>
-						<p>Schedule Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:5</p>
-						<p>Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:4</p>
-						<p>Scheduled Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:3</p>
-						<p>Unscheduled Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:2 </p>
-						<p>Remaining scheduled Visit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:1	</p>					
-					</li>						
-				</ul>
-				
-            </div><!--/cont-->
-			
-			<div data-theme="c" data-role="footer" data-position="fixed">
-			
-			</div>
-			
-		 </div><!--/page-->
 
     <script type="text/javascript" src="phonegap.js"></script>
     
