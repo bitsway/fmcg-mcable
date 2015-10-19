@@ -724,6 +724,9 @@
 					<li style="border-bottom-style:solid; border-color:#CBE4E4;border-bottom-width:medium"><a data-role="button" class="ui-btn" style="text-align:center" onClick="getOrder();" >Order</a></li>
                     
                 </ul>
+                <br/>
+                
+                <input type="text" name="visit_notes" id="visit_notes"  value="" placeholder="Notes">
                 
 				<br/>
 				<a data-role="button" href="#page_confirm" data-icon="arrow-r" data-iconpos="right" >Next</a>
@@ -901,8 +904,8 @@
             
 			<input name="lscPhotoProfile" id="lscPhotoProfile" type="hidden" value="">	
             
-			<input type="text" name="lat_p" id="lat_p" >
-			<input type="text" name="long_p" id="long_p" ><!--readonly-->
+			<input type="hidden" name="lat_p" id="lat_p" readonly>
+			<input type="hidden" name="long_p" id="long_p" readonly><!--readonly-->
             
             <!--<input type="text" name="urlpath" id="urlpath">-->
             
@@ -1215,8 +1218,8 @@
             
 			<input name="lscPhoto" id="lscPhoto"   type="hidden" value="">
             
-			<input type="text" name="lat" id="lat" >
-			<input type="text" name="long" id="long" ><!--readonly-->
+			<input type="hidden" name="lat" id="lat" readonly>
+			<input type="hidden" name="long" id="long" readonly><!--readonly-->
             
 			<a data-role="button" onClick="getLocationInfo();" >Confirm Location</a>            
             
